@@ -5,19 +5,23 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+
+
 public class Association {
 	ArrayList<ItemSet> hm;
 	ArrayList<ArrayList<Integer>> data;
 	String attributes[];
-	String fileName = "data.csv";
+	String fileName;
 	BufferedReader br;
 	int support;
 	int totalTransactions;
 	int index;
 	int index2;
 	int confidence;
+	String finalText;
 
-	Association(int s) throws FileNotFoundException {
+	Association(int s, String fileName) throws FileNotFoundException {
+		this.fileName = fileName;
 		br = new BufferedReader(new FileReader(fileName));
 		hm = new ArrayList<ItemSet>();
 		data = new ArrayList<>();
@@ -25,9 +29,15 @@ public class Association {
 		index = 0;
 		index2 = 0;
 		confidence = 60;
+		finalText = "";
 	}
-
-	void readFile() throws IOException {
+	void setSupport(int s){
+		this.support = s;
+	}
+	void setConfidence(int c){
+		this.confidence = c;
+	}
+	ArrayList<ArrayList<Integer>> readFile() throws IOException {
 		attributes = br.readLine().split(",");
 		String buffer2 = br.readLine();
 		int k = 0;
@@ -44,6 +54,7 @@ public class Association {
 		}
 		br.close();
 		totalTransactions = data.size();
+		return data;
 	}
 
 	void set1Generation() {
@@ -139,13 +150,14 @@ public class Association {
 					//System.out.println("check1");
 					if (Arrays.equals(is.items, temp)) {
 						//System.out.println("check2");
-						if ((float) (is.support * 100 / supp) >= confidence) {
-							System.out.println("check2");
+						if ((float) (supp * 100 / is.support) >= confidence) {
+							//System.out.println("check2");
 							for (int j : temp) {
 								System.out.print(attributes[j] + ",");
+								finalText+=attributes[j] + ",";
 							}
 							System.out.print(" -> ");
-							
+							finalText+= " -> ";
 							for(int l:x.items) {
 								boolean flag=true;
 								for(int m:temp) {
@@ -154,16 +166,22 @@ public class Association {
 										break;
 									}
 								}
-								if(flag)
+								if(flag){
 									System.out.print(attributes[l]+",");
+									finalText+=attributes[l]+",";
+								}
 							}
 							System.out.println();
+							finalText+="\n";
 							
 //							for (int i : list1) {
 //								System.out.print(attributes[i] + ",");
 //							}
 							System.out.println((float) supp * 100 / is.support);
+							finalText+="confidence is : "+(float) supp * 100 / is.support;
 							System.out.println();
+							finalText+="\n";
+							
 						}
 					}
 				}
@@ -200,19 +218,19 @@ public class Association {
 		}
 	}
 
-	public static void main(String[] args) throws IOException {
-		Association a = new Association(50);
-		a.readFile();
-		a.set1Generation();
-		a.set2generation();
-		int flag = 1;
-		int k = 3;
-		while (flag != 0) {
-			flag = a.setNgeneration(k);
-			k++;
-		}
-		a.conf(70);
-		// a.display();
-	}
+	//public static void main(String[] args) throws IOException {
+//		Association a = new Association(60);
+//		a.readFile();
+//		a.set1Generation();
+//		a.set2generation();
+//		int flag = 1;
+//		int k = 3;
+//		while (flag != 0) {
+//			flag = a.setNgeneration(k);
+//			k++;
+//		}
+//		a.conf(100);
+//		 a.display();
+	//}
 
 }

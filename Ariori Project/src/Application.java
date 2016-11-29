@@ -1,8 +1,12 @@
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -34,8 +38,10 @@ public class Application extends JPanel{
 	JButton btnGenerate;
 	JTextField jfSupport, jfConfidence;
 	String fileName;
+	Association a;
+	ArrayList<ArrayList<Integer>> data;
 	int minSupport, minConf;
-	void setElemets(){
+	void setElemets()	{
 		btnViewData = new JButton("View Data");
 		btnGenerateRules = new JButton("Generate Rules");
 		btnSelectFile = new JButton("Select File");
@@ -59,6 +65,7 @@ public class Application extends JPanel{
 		btnGenerateRules.setEnabled(false);
 		this.setLayout(new GridLayout(0,1));
 		this.add(pnlInputFile);
+
 	}
 	void setActions(JFrame jfk, JPanel main)	{
 		btnSelectFile.addActionListener(new ActionListener()	{
@@ -70,7 +77,17 @@ public class Application extends JPanel{
 				System.out.println("Filename: " + fileName);
 				if(fileName != null && !fileName.isEmpty()){
 					File f = new File(fileName);
-					if(f.exists() && !f.isDirectory()) { 
+					if(f.exists() && !f.isDirectory()) {
+						try {
+							a=new Association(50, fileName);
+							data = a.readFile();
+						} catch (FileNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					    btnSelectFile.setEnabled(false);
 					    btnViewData.setEnabled(true);
 					    btnGenerateRules.setEnabled(true);
@@ -94,12 +111,16 @@ public class Application extends JPanel{
 				DefaultTableModel model = new DefaultTableModel();
 				JTable jtData = new JTable(model);
 				String headers[] = new String[]	{"Data1" , "Data2"};
-				model.setColumnIdentifiers(headers);
-				model.addRow(new String[]{"1","0"});
-				model.addRow(new String[]{"1","0"});
-				model.addRow(new String[]{"1","0"});
-				model.addRow(new String[]{"1","0"});
-				model.addRow(new String[]{"1","0"});
+				//System.out.println(data);
+				ReadCsv rsc = null;
+				try {
+					rsc = new ReadCsv(fileName, ",");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				//model.setColumnIdentifiers(headers);
+				rsc.printCsv(model);
 				jtData.setPreferredScrollableViewportSize(jtData.getPreferredSize());
 				setLayout(new BorderLayout());
 				add(new JScrollPane(jtData));
@@ -152,11 +173,25 @@ public class Application extends JPanel{
 				// TODO Auto-generated method stub
 				if(jfSupport.getText() != null && jfConfidence.getText() != null && !jfSupport.getText().isEmpty() && !jfConfidence.getText().isEmpty())	{
 					removeAll();
+					jfk.setSize(400,600);
+					a.setConfidence(Integer.parseInt(jfConfidence.getText()));
+					a.setSupport(Integer.parseInt(jfSupport.getText()));
+					a.set1Generation();
+					a.set2generation();
+					int flag = 1;
+					int k = 3;
+					while (flag != 0) {
+						flag = a.setNgeneration(k);
+						k++;
+					}
+					a.conf(a.confidence);					
 					minSupport = Integer.parseInt(jfSupport.getText());
 					minConf = Integer.parseInt(jfConfidence.getText());
 					add(new JLabel("Minimum Support: " + minSupport));
 					add(new JLabel("Minimum Confidence: " + minConf));
-					add(new JTextArea("a->b\nb->c"));
+					JScrollPane jsp = new JScrollPane(new JTextArea(a.finalText), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+					
+					add(jsp);
 					add(btnBack);
 					revalidate();
 					repaint();
@@ -166,11 +201,11 @@ public class Application extends JPanel{
 			
 		});
 	}
-	Application(JFrame jfk)	{
+	Application(JFrame jfk) throws FileNotFoundException	{
 		setElemets();
 		setActions(jfk, this);
 	}
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		// TODO Auto-generated method stub
 		JFrame jfk = new JFrame("Apriori Application");
 		jfk.setContentPane(new Application( jfk));
