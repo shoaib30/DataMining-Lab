@@ -1,0 +1,21 @@
+Tid,home owner,marital status,annual income,defaulter
+1,0,single,194,yes
+2,1,married,102,no
+3,0,single,272,yes
+4,0,married,192,yes
+5,1,divorsed,232,yes
+6,0,divorsed,234,yes
+7,1,single,249,no
+8,0,married,156,no
+9,1,single,246,yes
+10,0,single,259,yes
+11,0,married,276,no
+12,1,married,167,no
+13,1,married,188,no
+14,0,divorsed,210,yes
+15,1,divorsed,209,yes
+16,0,single,215,yes
+17,1,married,159,no
+18,1,single,265,no
+19,1,married,266,no
+20,0,divorsed,234,yes
