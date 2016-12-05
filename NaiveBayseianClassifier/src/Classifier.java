@@ -51,8 +51,8 @@ public class Classifier {
 		String attr2 = sc.next();
 		double newProb[] = new double[2];
 		for(int i=0; i<c.length; i++)	{
-			double exp = Math.pow((attr1 - c[i].mean), 2)/(2 * Math.pow(c[i].variance, 2));
-			double prob = exp/(Math.sqrt(2 * 3.14 * Math.sqrt(c[i].variance)));
+			double exp = Math.pow((attr1 - c[i].mean), 2)/(2 *c[i].variance);
+			double prob = Math.exp(-1*exp)/(Math.sqrt(2 * 3.14 * Math.sqrt(c[i].variance)));
 			newProb[i] = prob * c[i].getProbablity(attr2);
 			System.out.println("Probability of class: "+ i + " = " + newProb[i]);
 		}
