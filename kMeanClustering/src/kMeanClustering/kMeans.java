@@ -33,6 +33,10 @@ public class kMeans {
 		for(int i=0; i<3; i++){
 			newCentroids[i] = new Centroid(newCentroidValue[i][0] / (numberOfRecordsInCluster[i]*1.0) , newCentroidValue[i][1] / (numberOfRecordsInCluster[i]*1.0));
 		}
+		System.out.println("Counts:- ");
+		for(int i=0; i<newCentroids.length; i++){
+			System.out.println(i + "->" +numberOfRecordsInCluster[i]);
+		}
 		System.out.println("Cntroids:- ");
 		for(int i=0; i<newCentroids.length; i++){
 			newCentroids[i].printCentroid();
