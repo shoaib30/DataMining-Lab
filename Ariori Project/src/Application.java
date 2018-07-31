@@ -110,7 +110,7 @@ public class Application extends JPanel{
 				jfk.setSize(400,500);
 				DefaultTableModel model = new DefaultTableModel();
 				JTable jtData = new JTable(model);
-				String headers[] = new String[]	{"Data1" , "Data2"};
+				//String headers[] = new String[]	{"Data1" , "Data2"};
 				//System.out.println(data);
 				ReadCsv rsc = null;
 				try {

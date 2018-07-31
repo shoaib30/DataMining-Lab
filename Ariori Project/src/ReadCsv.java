@@ -3,8 +3,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.swing.table.DefaultTableModel;
 
 public class ReadCsv {

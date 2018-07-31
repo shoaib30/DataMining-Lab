@@ -52,6 +52,6 @@ public class AggregateAndDiscretize {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		System.out.println("Enter file Name: ");
-		AggregateAndDiscretize s = new AggregateAndDiscretize(sc.next());
+		new AggregateAndDiscretize(sc.next());
 	}
 }

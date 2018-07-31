@@ -57,7 +57,7 @@ public class StratifiedSample {
 		// TODO Auto-generated method stub
 		System.out.println("Enter file Name: ");
 		Scanner sc = new Scanner(System.in);
-		StratifiedSample s = new StratifiedSample(sc.next());
+		new StratifiedSample(sc.next());
 		sc.close();
 	}
 
